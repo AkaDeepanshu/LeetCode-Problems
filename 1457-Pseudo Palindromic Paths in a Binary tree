@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int pseudoPalindromicPaths(TreeNode* root) {
+        return countPaths(root, {});
+    }
+
+private:
+    int countPaths(TreeNode* node, const std::unordered_map<int, int>& freq) {
+        if (!node) return 0;
+
+        std::unordered_map<int, int> updatedFreq = freq;
+        updatedFreq[node->val]++;
+
+        if (!node->left && !node->right) {
+            int oddCount = 0;
+            for (const auto& pair : updatedFreq) {
+                if (pair.second % 2 != 0) {
+                    oddCount++;
+                    if (oddCount > 1) break;
+                }
+            }
+            return (oddCount <= 1) ? 1 : 0;
+        }
+
+        int leftPaths = countPaths(node->left, updatedFreq);
+        int rightPaths = countPaths(node->right, updatedFreq);
+
+        return leftPaths + rightPaths;
+    }
+};
