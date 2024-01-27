@@ -1,0 +1,43 @@
+class Solution {
+public:
+    string intToRoman(int num) {
+        string ans;
+        map< int ,char > mymap;
+        mymap.insert({1000,'M'});
+        mymap.insert({500,'D'});
+        mymap.insert({100,'C'});
+        mymap.insert({50,'L'});
+        mymap.insert({10,'X'});
+        mymap.insert({5,'V'});
+        mymap.insert({1,'I'});
+        
+        int i=1;
+        while (num>0){
+            int r=num%10;
+            r*=i;
+            bool temp=r/(5*i);
+
+            if(r==0){
+                i*=10;
+                num/=10;
+                continue;
+            }
+            else if(r%(5*i)==0){
+                ans.insert(ans.begin(),mymap[5*i]);
+            }
+            else if(r%(5*i)==4*i){
+                ans.insert(ans.begin(),mymap[5*(temp+1)*i]);
+                ans.insert(ans.begin(),mymap[i]);
+            }
+            else {
+                for(int j=(r%(5*i)) ; j>0 ; j-=i){
+                ans.insert(ans.begin(),mymap[i]);
+                }
+                if(temp==1) ans.insert(ans.begin(),mymap[5*i]);
+            }
+            i*=10;
+            num/=10;
+        }
+        return ans;
+    }
+};
